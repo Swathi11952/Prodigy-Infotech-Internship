@@ -2,45 +2,55 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Weather App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #74ebd5, #acb6e5);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .weather-container {
             background: white;
-            padding: 25px;
-            border-radius: 10px;
+            padding: 30px;
+            border-radius: 12px;
             text-align: center;
-            width: 300px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            width: 320px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         input {
-            width: 80%;
-            padding: 8px;
-            margin-bottom: 10px;
+            width: 85%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
         button {
-            padding: 8px 15px;
+            padding: 10px 18px;
             background: #007bff;
             color: white;
             border: none;
             cursor: pointer;
             border-radius: 5px;
+            font-size: 15px;
         }
 
         button:hover {
@@ -49,65 +59,111 @@
 
         .weather-info {
             margin-top: 20px;
+            line-height: 1.6;
         }
 
         .error {
             color: red;
-            margin-top: 10px;
+            margin-top: 15px;
         }
     </style>
 </head>
+
 <body>
 
-<div class="weather-container">
-    <h1>Weather App</h1>
-    <input type="text" id="cityInput" placeholder="Enter city name">
-    <br>
-    <button onclick="getWeather()">Get Weather</button>
+    <div class="weather-container">
 
-    <div class="weather-info" id="weatherInfo"></div>
-    <div class="error" id="error"></div>
-</div>
+        <h1>Weather App</h1>
 
-<script>
-    const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API Key
+        <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter city name"
+        >
 
-    function getWeather() {
-        const city = document.getElementById("cityInput").value;
-        const weatherInfo = document.getElementById("weatherInfo");
-        const errorDiv = document.getElementById("error");
+        <br>
 
-        weatherInfo.innerHTML = "";
-        errorDiv.textContent = "";
+        <button onclick="getWeather()">Get Weather</button>
 
-        if (city === "") {
-            errorDiv.textContent = "Please enter a city name";
-            return;
+        <div class="weather-info" id="weatherInfo"></div>
+
+        <div class="error" id="error"></div>
+
+    </div>
+
+    <script>
+
+        // Replace this with your OpenWeatherMap API key
+        const apiKey = "YOUR_API_KEY";
+
+        function getWeather() {
+
+            const city = document.getElementById("cityInput").value.trim();
+
+            const weatherInfo = document.getElementById("weatherInfo");
+
+            const errorDiv = document.getElementById("error");
+
+            // Clear previous result
+            weatherInfo.innerHTML = "";
+            errorDiv.textContent = "";
+
+            // Check empty input
+            if (city === "") {
+                errorDiv.textContent = "Please enter a city name";
+                return;
+            }
+
+            // OpenWeatherMap API URL
+            const url =
+                `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+
+            fetch(url)
+
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error("City not found");
+                    }
+
+                    return response.json();
+                })
+
+                .then(data => {
+
+                    weatherInfo.innerHTML = `
+                        <h3>${data.name}, ${data.sys.country}</h3>
+
+                        <p>
+                            🌡 Temperature:
+                            ${data.main.temp} °C
+                        </p>
+
+                        <p>
+                            ☁ Weather:
+                            ${data.weather[0].description}
+                        </p>
+
+                        <p>
+                            💧 Humidity:
+                            ${data.main.humidity}%
+                        </p>
+
+                        <p>
+                            🌬 Wind Speed:
+                            ${data.wind.speed} m/s
+                        </p>
+                    `;
+                })
+
+                .catch(error => {
+
+                    errorDiv.textContent = error.message;
+
+                });
         }
 
-        const url = https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric;
-
-        fetch(url)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("City not found");
-                }
-                return response.json();
-            })
-            .then(data => {
-                weatherInfo.innerHTML = `
-                    <h3>${data.name}, ${data.sys.country}</h3>
-                    <p>🌡 Temperature: ${data.main.temp} °C</p>
-                    <p>☁ Weather: ${data.weather[0].description}</p>
-                    <p>💧 Humidity: ${data.main.humidity}%</p>
-                    <p>🌬 Wind Speed: ${data.wind.speed} m/s</p>
-                `;
-            })
-            .catch(error => {
-                errorDiv.textContent = error.message;
-            });
-    }
-</script>
+    </script>
 
 </body>
 </html>
