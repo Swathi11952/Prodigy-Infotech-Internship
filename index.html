@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Prodigy Infotech Internship</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* Navigation */
+
+        nav {
+            background: #0b2d4d;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        nav ul li a:hover {
+            color: #4fc3f7;
+        }
+
+        /* Hero */
+
+        .hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+
+            background: linear-gradient(
+                135deg,
+                #0b2d4d,
+                #1769aa
+            );
+
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .hero button {
+            margin-top: 25px;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 6px;
+            background: white;
+            color: #0b2d4d;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hero button:hover {
+            background: #4fc3f7;
+            color: white;
+        }
+
+        /* About */
+
+        .about {
+            padding: 70px 20px;
+            text-align: center;
+        }
+
+        .about h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            max-width: 800px;
+            margin: auto;
+            line-height: 1.7;
+            font-size: 17px;
+        }
+
+        /* Tasks */
+
+        .tasks {
+            padding: 70px 30px;
+            background: #eaf2f8;
+        }
+
+        .tasks h2 {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+
+        .task-container {
+            max-width: 1100px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 25px;
+        }
+
+        .task-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+
+            box-shadow:
+                0 5px 15px rgba(0, 0, 0, 0.1);
+
+            transition: transform 0.3s;
+        }
+
+        .task-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .task-card h3 {
+            color: #0b2d4d;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .task-card p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .task-card a {
+            display: inline-block;
+            text-decoration: none;
+            background: #0b2d4d;
+            color: white;
+            padding: 11px 22px;
+            border-radius: 6px;
+        }
+
+        .task-card a:hover {
+            background: #1769aa;
+        }
+
+        /* Skills */
+
+        .skills {
+            padding: 70px 20px;
+            text-align: center;
+        }
+
+        .skills h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .skill-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .skill {
+            background: #0b2d4d;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 20px;
+        }
+
+        /* Contact */
+
+        .contact {
+            padding: 70px 20px;
+            text-align: center;
+            background: #dceaf5;
+        }
+
+        .contact h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .contact p {
+            margin: 10px;
+        }
+
+        /* Footer */
+
+        footer {
+            background: #0b2d4d;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 700px) {
+
+            nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            nav ul {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav>
+
+        <div class="logo">
+            Prodigy Infotech
+        </div>
+
+        <ul>
+            <li>
+                <a href="#home">Home</a>
+            </li>
+
+            <li>
+                <a href="#about">About</a>
+            </li>
+
+            <li>
+                <a href="#tasks">Tasks</a>
+            </li>
+
+            <li>
+                <a href="#skills">Skills</a>
+            </li>
+
+            <li>
+                <a href="#contact">Contact</a>
+            </li>
+        </ul>
+
+    </nav>
+
+
+    <!-- Home -->
+
+    <section class="hero" id="home">
+
+        <h1>
+            Prodigy Infotech Internship
+        </h1>
+
+        <p>
+            Web Development Internship – Task Portfolio
+        </p>
+
+        <button onclick="scrollToTasks()">
+            View My Tasks
+        </button>
+
+    </section>
+
+
+    <!-- About -->
+
+    <section class="about" id="about">
+
+        <h2>
+            About My Internship
+        </h2>
+
+        <p>
+            This portfolio contains the web development projects
+            completed as part of my internship at Prodigy Infotech.
+            The projects demonstrate my skills in front-end
+            development, responsive design, JavaScript programming,
+            DOM manipulation and API integration.
+        </p>
+
+    </section>
+
+
+    <!-- Tasks -->
+
+    <section class="tasks" id="tasks">
+
+        <h2>
+            Internship Tasks
+        </h2>
+
+        <div class="task-container">
+
+
+            <!-- Task 1 -->
+
+            <div class="task-card">
+
+                <h3>
+                    Task 1
+                </h3>
+
+                <p>
+                    Responsive Landing Page
+                </p>
+
+                <a href="Task-1/task1.html">
+                    View Task
+                </a>
+
+            </div>
+
+
+            <!-- Task 2 -->
+
+            <div class="task-card">
+
+                <h3>
+                    Task 2
+                </h3>
+
+                <p>
+                    Weather App
+                </p>
+
+                <a href="Task-2/task2.html">
+                    View Task
+                </a>
+
+            </div>
+
+
+            <!-- Task 3 -->
+
+            <div class="task-card">
+
+                <h3>
+                    Task 3
+                </h3>
+
+                <p>
+                    Tic Tac Toe Game
+                </p>
+
+                <a href="Task-3/task3.html">
+                    View Task
+                </a>
+
+            </div>
+
+
+            <!-- Task 4 -->
+
+            <div class="task-card">
+
+                <h3>
+                    Task 4
+                </h3>
+
+                <p>
+                    Web Development Project
+                </p>
+
+                <a href="Task-4/task4.html">
+                    View Task
+                </a>
+
+            </div>
+
+
+            <!-- Task 5 -->
+
+            <div class="task-card">
+
+                <h3>
+                    Task 5
+                </h3>
+
+                <p>
+                    Web Development Project
+                </p>
+
+                <a href="Task-5/task5.html">
+                    View Task
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- Skills -->
+
+    <section class="skills" id="skills">
+
+        <h2>
+            Skills Used
+        </h2>
+
+        <div class="skill-list">
+
+            <span class="skill">HTML</span>
+
+            <span class="skill">CSS</span>
+
+            <span class="skill">JavaScript</span>
+
+            <span class="skill">Responsive Design</span>
+
+            <span class="skill">DOM Manipulation</span>
+
+            <span class="skill">API Integration</span>
+
+            <span class="skill">Git</span>
+
+            <span class="skill">GitHub</span>
+
+        </div>
+
+    </section>
+
+
+    <!-- Contact -->
+
+    <section class="contact" id="contact">
+
+        <h2>
+            Contact
+        </h2>
+
+        <p>
+            Interested in my work? Feel free to connect with me.
+        </p>
+
+        <p>
+            GitHub:
+            <a
+                href="https://github.com/Swathi11952"
+                target="_blank">
+                Swathi11952
+            </a>
+        </p>
+
+    </section>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            © 2026 Swathi S | Prodigy Infotech Internship
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+
+    <script>
+
+        function scrollToTasks() {
+
+            document
+                .getElementById("tasks")
+                .scrollIntoView({
+                    behavior: "smooth"
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
