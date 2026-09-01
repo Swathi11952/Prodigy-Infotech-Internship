@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic Tac Toe Game</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
             background: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
 
         .game-container {
             text-align: center;
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         h1 {
@@ -36,6 +43,7 @@
             width: 100px;
             height: 100px;
             font-size: 2.5rem;
+            font-weight: bold;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,6 +58,7 @@
         .status {
             margin: 15px 0;
             font-size: 1.2rem;
+            font-weight: bold;
         }
 
         button {
@@ -67,9 +76,11 @@
         }
     </style>
 </head>
+
 <body>
 
 <div class="game-container">
+
     <h1>Tic Tac Toe</h1>
 
     <div class="board" id="board">
@@ -85,79 +96,121 @@
     </div>
 
     <div class="status" id="status">Player X's Turn</div>
+
     <button onclick="resetGame()">Restart Game</button>
+
 </div>
 
 <script>
+
     const cells = document.querySelectorAll(".cell");
     const statusText = document.getElementById("status");
 
     let currentPlayer = "X";
     let gameActive = true;
-    let boardState = ["", "", "", "", "", "", "", "", ""];
+
+    let boardState = [
+        "", "", "",
+        "", "", "",
+        "", "", ""
+    ];
 
     const winningConditions = [
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8],
-        [0,4,8],
-        [2,4,6]
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
     ];
 
     cells.forEach((cell, index) => {
-        cell.addEventListener("click", () => handleCellClick(cell, index));
+
+        cell.addEventListener("click", function () {
+            handleCellClick(cell, index);
+        });
+
     });
 
     function handleCellClick(cell, index) {
-        if (boardState[index] !== "" || !gameActive) return;
+
+        if (boardState[index] !== "" || !gameActive) {
+            return;
+        }
 
         boardState[index] = currentPlayer;
+
         cell.textContent = currentPlayer;
 
         checkResult();
     }
 
     function checkResult() {
+
         let roundWon = false;
 
         for (let condition of winningConditions) {
+
             const [a, b, c] = condition;
+
             if (
-                boardState[a] &&
+                boardState[a] !== "" &&
                 boardState[a] === boardState[b] &&
                 boardState[a] === boardState[c]
             ) {
+
                 roundWon = true;
                 break;
             }
         }
 
         if (roundWon) {
-            statusText.textContent = Player ${currentPlayer} Wins!;
+
+            statusText.textContent =
+                `Player ${currentPlayer} Wins!`;
+
             gameActive = false;
+
             return;
         }
 
         if (!boardState.includes("")) {
+
             statusText.textContent = "Game Draw!";
+
             gameActive = false;
+
             return;
         }
 
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
-        statusText.textContent = Player ${currentPlayer}'s Turn;
+        currentPlayer =
+            currentPlayer === "X" ? "O" : "X";
+
+        statusText.textContent =
+            `Player ${currentPlayer}'s Turn`;
     }
 
     function resetGame() {
-        boardState = ["", "", "", "", "", "", "", "", ""];
+
+        boardState = [
+            "", "", "",
+            "", "", "",
+            "", "", ""
+        ];
+
         currentPlayer = "X";
+
         gameActive = true;
+
         statusText.textContent = "Player X's Turn";
-        cells.forEach(cell => cell.textContent = "");
+
+        cells.forEach(function (cell) {
+            cell.textContent = "";
+        });
     }
+
 </script>
 
 </body>
