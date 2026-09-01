@@ -12,7 +12,6 @@
 
         body {
             margin: 0;
-            padding: 0;
             font-family: Arial, sans-serif;
             background: linear-gradient(to right, #74ebd5, #acb6e5);
             display: flex;
@@ -27,7 +26,7 @@
             border-radius: 12px;
             text-align: center;
             width: 320px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
         }
 
         h1 {
@@ -71,99 +70,95 @@
 
 <body>
 
-    <div class="weather-container">
+<div class="weather-container">
 
-        <h1>Weather App</h1>
+    <h1>Weather App</h1>
 
-        <input
-            type="text"
-            id="cityInput"
-            placeholder="Enter city name"
-        >
+    <input type="text" id="cityInput" placeholder="Enter city name">
 
-        <br>
+    <br>
 
-        <button onclick="getWeather()">Get Weather</button>
+    <button onclick="getWeather()">Get Weather</button>
 
-        <div class="weather-info" id="weatherInfo"></div>
+    <div class="weather-info" id="weatherInfo"></div>
 
-        <div class="error" id="error"></div>
+    <div class="error" id="error"></div>
 
-    </div>
+</div>
 
-    <script>
+<script>
 
-        // Replace this with your OpenWeatherMap API key
-        const apiKey = "YOUR_API_KEY";
+async function getWeather() {
 
-        function getWeather() {
+    const city = document.getElementById("cityInput").value.trim();
+    const weatherInfo = document.getElementById("weatherInfo");
+    const errorDiv = document.getElementById("error");
 
-            const city = document.getElementById("cityInput").value.trim();
+    weatherInfo.innerHTML = "";
+    errorDiv.textContent = "";
 
-            const weatherInfo = document.getElementById("weatherInfo");
+    if (city === "") {
+        errorDiv.textContent = "Please enter a city name";
+        return;
+    }
 
-            const errorDiv = document.getElementById("error");
+    try {
 
-            // Clear previous result
-            weatherInfo.innerHTML = "";
-            errorDiv.textContent = "";
+        // Find city coordinates
+        const geoUrl =
+            `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
 
-            // Check empty input
-            if (city === "") {
-                errorDiv.textContent = "Please enter a city name";
-                return;
-            }
+        const geoResponse = await fetch(geoUrl);
 
-            // OpenWeatherMap API URL
-            const url =
-                `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
-
-            fetch(url)
-
-                .then(response => {
-
-                    if (!response.ok) {
-                        throw new Error("City not found");
-                    }
-
-                    return response.json();
-                })
-
-                .then(data => {
-
-                    weatherInfo.innerHTML = `
-                        <h3>${data.name}, ${data.sys.country}</h3>
-
-                        <p>
-                            🌡 Temperature:
-                            ${data.main.temp} °C
-                        </p>
-
-                        <p>
-                            ☁ Weather:
-                            ${data.weather[0].description}
-                        </p>
-
-                        <p>
-                            💧 Humidity:
-                            ${data.main.humidity}%
-                        </p>
-
-                        <p>
-                            🌬 Wind Speed:
-                            ${data.wind.speed} m/s
-                        </p>
-                    `;
-                })
-
-                .catch(error => {
-
-                    errorDiv.textContent = error.message;
-
-                });
+        if (!geoResponse.ok) {
+            throw new Error("Unable to find city");
         }
 
-    </script>
+        const geoData = await geoResponse.json();
+
+        if (!geoData.results || geoData.results.length === 0) {
+            throw new Error("City not found");
+        }
+
+        const location = geoData.results[0];
+
+        const latitude = location.latitude;
+        const longitude = location.longitude;
+
+        // Get weather
+        const weatherUrl =
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code&timezone=auto`;
+
+        const weatherResponse = await fetch(weatherUrl);
+
+        if (!weatherResponse.ok) {
+            throw new Error("Unable to get weather");
+        }
+
+        const weatherData = await weatherResponse.json();
+
+        const current = weatherData.current;
+
+        weatherInfo.innerHTML = `
+            <h3>${location.name}, ${location.country}</h3>
+
+            <p>🌡 Temperature: ${current.temperature_2m} °C</p>
+
+            <p>💧 Humidity: ${current.relative_humidity_2m}%</p>
+
+            <p>🌬 Wind Speed: ${current.wind_speed_10m} km/h</p>
+
+            <p>☁ Weather Code: ${current.weather_code}</p>
+        `;
+
+    } catch (error) {
+
+        errorDiv.textContent = error.message;
+
+    }
+}
+
+</script>
 
 </body>
 </html>
